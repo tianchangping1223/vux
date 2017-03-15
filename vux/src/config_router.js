@@ -1,0 +1,70 @@
+export default function(router){
+	router.map({
+		'/error':{
+			component:function(resolve){
+				resolve({
+					template:"<div>您要的页面未开发</div>"//一句话
+				})
+				//require(['./error'],resolve)//大页面
+			}
+		},
+		'/login':{
+			component:function(resolve){
+				//require(['./login'],function(name){console.log(name)})
+				require(['./login'],resolve)//resolve（渲染）解决组件加载//name解析模板object
+			}
+		},
+		'/home':{
+			component:function(resolve){
+				require(['./home'],resolve)
+			},
+			subRoutes:{
+				'/list':{
+					component:function(resolve){
+						require(['./list'],resolve)
+						//require(['地址'],resolve)组件的异步加载，第一个参数是组件加载的文件目录，第二个是传过来的参数
+					}/*,subRoutes:{//三级
+						'/list':{
+							component:function(resolve){
+								require(['./list'],resolve)
+							}
+						}
+					}*/
+				},
+				'/index':{
+					component:function(resolve){
+						require(['./index'],resolve)
+					}
+				},
+				'/product':{
+					component:function(resolve){
+						require(['./product'],resolve)				
+					}
+				}
+
+			}
+		}
+		
+	})
+	
+	/*//console.log(router)
+	//路由
+	router.map({
+		'/list':{
+			component:List
+		},
+		'/index':{
+			component:Index
+		},
+		'/product':{
+			component:Product
+		}
+	})
+*/
+	//重定向，所有匹配不到的  404 error页面
+	router.redirect({
+		"*":"/error",//匹配不到的
+		"/":"/login"//首页
+	})
+
+}
